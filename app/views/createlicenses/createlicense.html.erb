@@ -1,0 +1,169 @@
+<%= render 'layerbegin' %>
+<script>
+  $(document).ready(function () {
+
+
+
+      $('.i-checks').iCheck({
+          checkboxClass: 'icheckbox_square-green',
+          radioClass: 'iradio_square-green'
+      });
+
+
+
+$('#create').click(function(){
+   var cpuid=$('#cpuid').val();
+    var licensenum=$('#licensenum').val();
+    var licensetime=$('#licensetime').val();
+
+    $.ajax({
+        type:'get',
+        dataType:'json',
+        url:'/createlicenses/ajaxcreate?cpuid='+cpuid+'&licensenum='+licensenum+'&licensetime='+licensetime,
+        success:function(data) {
+            $('#license').val(data[0].license);
+            $('#create').attr('disabled',"true");
+        },
+        error : function() {
+alert('err');
+        }
+    });
+});
+
+
+
+      $('#data_1 .input-group.date').datepicker({
+          todayBtn: "linked",
+          keyboardNavigation: false,
+          forceParse: false,
+          calendarWeeks: true,
+          autoclose: true
+      });
+
+
+
+      //alert(ischeck);
+      //return false;
+
+
+
+
+      //alert(mycheck);
+
+
+      date = new Date();
+      var ms = 30 * (1000 * 60 * 60 * 24);
+      var newDate = new Date(date.getTime() + ms);
+var myday =newDate.getFullYear()+"-";
+      myday+=newDate.getMonth()+1;
+      myday+='-';
+      myday+=newDate.getDate();
+      $('#licensetime').val(myday);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+
+  Date.prototype.Format=function(fmt)
+  { //author: meizz
+      var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+      };
+      if(/(y+)/.test(fmt))
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+      for(var k in o)
+          if(new RegExp("("+ k +")").test(fmt))
+              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+      return fmt;
+  }
+</script>
+
+<style type="text/css">
+    .showerr{
+        display: block;
+    }
+    .hiddenerr{
+        display: none;
+    }
+</style>
+
+<div class="ibox-content form-horizontal m-t">
+  <h3>序列号</h3>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">机器码：</label>
+    <div class="col-sm-9">
+      <input id="cpuid" class="form-control">
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="form-group" id="csdiv">
+    <label class="col-sm-2 control-label">次数：</label>
+    <div class="col-sm-9">
+      <input type="number" id="licensenum" class="form-control" value="100">
+    </div>
+  </div>
+
+  <div class="form-group" id="data_1" >
+    <label class="col-sm-2 control-label">截止日期：</label>
+    <div class="col-sm-9">
+    <div class="input-group date">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <input type="text" class="form-control" id="licensetime">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<input type="hidden" id="licensetype" >
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">序列号：</label>
+
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="license">
+
+      </div>
+    </div>
+
+<div>
+  <input type="button" value="生成" id="create" class="btn btn-w-m btn-success mylink pull-right">
+</div>
+  <%= link_to '返回', createlicenses_path,class:"btn btn-w-m btn-success mylink pull-left" %>
+<br>
+      <br>
+    </div>
+
+
+
+
+
+
+
+<%= render 'layerend' %>
